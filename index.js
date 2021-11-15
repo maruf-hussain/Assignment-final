@@ -22,6 +22,7 @@ try{
 await client.connect();
 const database = client.db('watchPoint');
 const servicesCollection = database.collection('services');
+const usersCollection = database.collection('users');
 
 // Get Api
 app.get('/services', async (req, res) => {
@@ -45,7 +46,6 @@ app.get('/services/:id', async (req, res) => {
 app.post('/services', async (req, res) => {
   const service = req.body;
   console.log('hit the post api', service);
-
   const result = await servicesCollection.insertOne(service);
   res.json(result);
 })
@@ -60,7 +60,41 @@ app.delete('/services/:id', async (req, res) => {
   res.json(result);
 })
 
+
+// users Api
+
+app.post('/users', async (req, res) => {
+  const user = req.body;
+  console.log('hit the users post api', user);
+  const result = await usersCollection.insertOne(user);
+  
+  res.json(result);
+})
+
+// Up srt Api
+
+app.put('/users', async (req, res) => {
+  const user = req.body;
+  const filter = {email: user.email};
+  const options = { upsert: true };
+  const updateDoc = {$set: user};
+  const result = await usersCollection.updateOne(filter, updateDoc, options);
+  res.json(result);
+
+})
+
+app.put('/users/:admin', async (req, res) => {
+  const user = req.body;
+  const filter = { email: user.email };
+  const updateDoc = {$set: {role: 'admin'}};
+  const result = await usersCollection.updateOne(filter, updateDoc);
+  res.json(result);
+})
+
+
+
 }
+
 finally{
     // await client.close();
 }

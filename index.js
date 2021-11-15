@@ -70,13 +70,10 @@ finally{
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-  
+
   res.send('Running watch point Server');
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
 app.listen(port, () => {
   console.log(`running watchPoint server at http://localhost:${port}`)

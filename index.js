@@ -83,12 +83,19 @@ app.put('/users', async (req, res) => {
 
 })
 
-app.put('/users/:admin', async (req, res) => {
-  const user = req.body;
-  const filter = { email: user.email };
+
+// Admin
+
+app.put('/uses/:admin', async (req, res) => {
+  const email = req.params.admin;
+  console.log(email);
+  const query = { email: email };
   const updateDoc = {$set: {role: 'admin'}};
-  const result = await usersCollection.updateOne(filter, updateDoc);
+  const result = await usersCollection.updateOne(query, updateDoc);
   res.json(result);
+  console.log(result);
+
+
 })
 
 
@@ -96,7 +103,7 @@ app.put('/users/:admin', async (req, res) => {
 }
 
 finally{
-    // await client.close();
+   
 }
 
 }

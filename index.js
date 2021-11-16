@@ -24,12 +24,15 @@ const database = client.db('watchPoint');
 const servicesCollection = database.collection('services');
 const usersCollection = database.collection('users');
 
+
+
 // Get Api
 app.get('/services', async (req, res) => {
   const cursor = servicesCollection.find({});
   const services = await cursor.toArray();
   res.send(services);
 });
+
 
 
 // get single product
@@ -40,6 +43,27 @@ app.get('/services/:id', async (req, res) => {
   const service = await servicesCollection.findOne(query);
   res.json(service);
 })
+
+
+
+
+// get users from database
+app.get('/users/:email', async (req, res) => {
+const email = req.params.email;
+console.log(email);
+const query = { email: email };
+const user = await usersCollection.findOne(query);
+let isAdmin = false;
+if(user.role === 'admin'){
+isAdmin = true;
+
+}
+console.log(isAdmin);
+res.json({admin: isAdmin});
+})
+
+
+
 
 
 // Post Api
